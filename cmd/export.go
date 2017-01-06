@@ -20,6 +20,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var domain, port, output string
+
 // exportCmd represents the export command
 var exportCmd = &cobra.Command{
 	Use:   "export",
@@ -27,6 +29,7 @@ var exportCmd = &cobra.Command{
 	Long:  `This module lets you export API definitions and output to a JSON file`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// TODO: Work your own magic here
+		args = []string{key, domain, port, output}
 		export.Apis(args)
 		fmt.Println("export called")
 	},
@@ -44,5 +47,9 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// exportCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	exportCmd.Flags().StringVarP(&key, "key", "k", "", "Secret Key for the Dashboard API")
+	exportCmd.Flags().StringVarP(&domain, "domain", "d", "", "Domain name for your Dashboard")
+	exportCmd.Flags().StringVarP(&port, "port", "p", "", "Port number for your Dashboard")
+	exportCmd.Flags().StringVarP(&output, "output", "o", "", "Output file name for your JSON string")
 
 }
