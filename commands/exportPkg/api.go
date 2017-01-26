@@ -10,7 +10,7 @@ import (
 	"os"
 )
 
-//Apis is a public function for exporting APIs to a specified JSON file
+// Apis is a public function for exporting APIs to a specified JSON file
 func Apis(args []string) {
 	if len(args) == 4 {
 		call := request.New(args[0], args[1], args[2])
