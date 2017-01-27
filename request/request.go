@@ -2,7 +2,7 @@ package request
 
 import (
 	"bytes"
-	utils "github.com/TykTechnologies/tyk-cli/utils"
+	"github.com/TykTechnologies/tyk-cli/utils"
 	"net/http"
 	"time"
 )

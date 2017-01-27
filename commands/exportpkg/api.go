@@ -1,10 +1,10 @@
-package exportPkg
+package exportpkg
 
 import (
 	"bytes"
 	"fmt"
-	request "github.com/TykTechnologies/tyk-cli/request"
-	utils "github.com/TykTechnologies/tyk-cli/utils"
+	"github.com/TykTechnologies/tyk-cli/request"
+	"github.com/TykTechnologies/tyk-cli/utils"
 	"io"
 	"net/http"
 	"os"

@@ -1,10 +1,10 @@
-package importPkg
+package importpkg
 
 import (
 	"encoding/json"
 	"fmt"
-	request "github.com/TykTechnologies/tyk-cli/request"
-	utils "github.com/TykTechnologies/tyk-cli/utils"
+	"github.com/TykTechnologies/tyk-cli/request"
+	"github.com/TykTechnologies/tyk-cli/utils"
 	"io/ioutil"
 	"os"
 )
@@ -27,13 +27,11 @@ func parseJSON(inputFile string, uri string, call *request.Request) {
 		fmt.Printf("File error: %v\n", err)
 		os.Exit(1)
 	}
-	fileMap := utils.InterfaceToMap(fileObject)
+	fileMap := fileObject.(map[string]interface{})
 	apis := fileMap["apis"].([]interface{})
 	for i := range apis {
 		definition := map[string]interface{}{
-			"api_definition": utils.InterfaceToMap(
-				apis[i],
-			)["api_definition"],
+			"api_definition": apis[i].(map[string]interface{})["api_definition"],
 		}
 		postAPI(definition, uri, call)
 	}
@@ -55,7 +53,7 @@ func apiAndID(definition map[string]interface{}) (api []byte, id string) {
 	if err != nil {
 		fmt.Println(err)
 	} else {
-		id = fmt.Sprintf("%v", utils.InterfaceToMap(definition["api_definition"])["id"])
+		id = fmt.Sprintf("%v", definition["api_definition"].(map[string]interface{})["id"])
 	}
 	return
 }
