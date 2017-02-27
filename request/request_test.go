@@ -1,9 +1,12 @@
 package request
 
 import (
+	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"reflect"
+	"strings"
 	"testing"
 	"time"
 )
@@ -30,16 +33,39 @@ func TestNew(t *testing.T) {
 	}
 }
 
+func setup() {
+	mux := http.NewServeMux()
+	server := httptest.NewServer(mux)
+	//client = NewClient(nil, "foo")
+	//url, _ := url.Parse(server.URL)
+	//client.BaseURL = url
+
+}
+
 func TestFullRequest(t *testing.T) {
-	req := httptest.NewRequest("GET", "www.example.com", nil)
+	//res := httptest.NewRecorder()
+	//server := httptest.NewRecorder(mux)
+	mux := http.NewServeMux()
+	server := httptest.NewServer(mux)
+	defer server.Close()
 	request := New("12345", "http://www.example.com", "3000")
-	var expectedResult = []string{"12345"}
-	var result []string
-	if result[0] != expectedResult[0] {
-		t.Fatalf("Expected %v, got %v", expectedResult, result)
+	req, err := request.FullRequest("GET", "http://localhost:3000/api/apis", nil)
+	mux.HandleFunc("/url", func(req, r *http.Request) {
+		fmt.Fprintln(req, `{}`)
+	})
+	http.DefaultServeMux.ServeHTTP(server, req)
+	if p, err := ioutil.ReadAll(req.Body); err != nil {
+		t.Fail()
+	} else {
+		if strings.Contains(string(p), "Error") {
+			t.Errorf("Header response shouldn't return error: %s", p)
+		} else if !strings.Contains(string(p), `12345`) {
+			t.Errorf("Header response doen't match:\n%s", p)
+		}
 	}
 }
 
+/*
 func TestFullRequestAuthorisation(t *testing.T) {
 	request := New("12345", "http://www.example.com", "3000")
 	var expectedResult = []string{"12345"}
@@ -67,4 +93,4 @@ func TestFullRequestContentType(t *testing.T) {
 	if result[0] != expectedResult[0] {
 		t.Fatalf("Expected %v, got %v", expectedResult, result)
 	}
-}
+}*/

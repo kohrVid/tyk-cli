@@ -26,6 +26,5 @@ func (request *Request) FullRequest(requestType string, url string, payload []by
 	req, err := http.NewRequest(requestType, url, bytes.NewBuffer(payload))
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Authorization", request.Authorisation)
-
 	return req, err
 }
