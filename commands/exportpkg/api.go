@@ -42,6 +42,7 @@ func APIs(args []string) {
 		log.Println(err)
 	}
 	exportResponse(resp, outputFile)
+	fmt.Println("Successfully exported APIs")
 }
 
 func exportResponse(resp *http.Response, file string) {
